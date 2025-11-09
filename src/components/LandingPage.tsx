@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { ShootingStars } from "./ShootingStars";
 
 interface LandingPageProps {
   onExplore: () => void;
@@ -24,6 +25,9 @@ export const LandingPage = ({ onExplore }: LandingPageProps) => {
 
   return (
     <div className="relative w-full h-screen overflow-hidden gradient-cosmic">
+      {/* Shooting Stars */}
+      <ShootingStars />
+      
       {/* Starfield */}
       <div className="absolute inset-0">
         {stars.map((star) => (

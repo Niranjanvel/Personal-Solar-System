@@ -3,6 +3,9 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import * as THREE from "three";
 import { PlanetCard } from "./PlanetCard";
+import { VolumeControl } from "./VolumeControl";
+import { ShootingStars } from "./ShootingStars";
+import { audioSystem } from "@/utils/audioSystem";
 
 interface Planet {
   id: string;
@@ -206,15 +209,33 @@ export const SolarSystem = () => {
   const [selectedPlanet, setSelectedPlanet] = useState<Planet | null>(null);
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
 
+  const handlePlanetClick = (planet: Planet) => {
+    setSelectedPlanet(planet);
+    audioSystem.playPlanetSound(planet.id);
+  };
+
+  const handleClosePlanet = () => {
+    if (selectedPlanet) {
+      audioSystem.stopPlanetSound(selectedPlanet.id);
+    }
+    setSelectedPlanet(null);
+  };
+
   return (
     <div className="relative w-full h-screen">
+      {/* Shooting Stars */}
+      <ShootingStars />
+      
       <Canvas camera={{ position: [0, 15, 35], fov: 60 }}>
         <Scene 
-          onPlanetClick={setSelectedPlanet}
+          onPlanetClick={handlePlanetClick}
           hoveredPlanet={hoveredPlanet}
           setHoveredPlanet={setHoveredPlanet}
         />
       </Canvas>
+
+      {/* Volume Control */}
+      <VolumeControl />
 
       {/* Hovering Planet Name */}
       {hoveredPlanet && !selectedPlanet && (
@@ -231,7 +252,7 @@ export const SolarSystem = () => {
       {selectedPlanet && (
         <PlanetCard 
           planet={selectedPlanet} 
-          onClose={() => setSelectedPlanet(null)} 
+          onClose={handleClosePlanet} 
         />
       )}
 
