@@ -1,53 +1,22 @@
-import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { ShootingStars } from "./ShootingStars";
+import { MilkyWay3D } from "./MilkyWay3D";
 
 interface LandingPageProps {
   onExplore: () => void;
 }
 
 export const LandingPage = ({ onExplore }: LandingPageProps) => {
-  const [stars, setStars] = useState<Array<{ id: number; x: number; y: number; size: number; opacity: number }>>([]);
-
-  useEffect(() => {
-    const generateStars = () => {
-      const newStars = Array.from({ length: 200 }, (_, i) => ({
-        id: i,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        size: Math.random() * 2 + 1,
-        opacity: Math.random() * 0.7 + 0.3,
-      }));
-      setStars(newStars);
-    };
-    generateStars();
-  }, []);
-
   return (
-    <div className="relative w-full h-screen overflow-hidden gradient-cosmic">
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* 3D Milky Way Background */}
+      <MilkyWay3D />
+      
       {/* Shooting Stars */}
       <ShootingStars />
       
-      {/* Starfield */}
-      <div className="absolute inset-0">
-        {stars.map((star) => (
-          <div
-            key={star.id}
-            className="absolute rounded-full bg-foreground animate-shimmer"
-            style={{
-              left: `${star.x}%`,
-              top: `${star.y}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
-              opacity: star.opacity,
-              animationDelay: `${Math.random() * 3}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Nebula Effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-nebula-blue/20 to-transparent" />
+      {/* Gradient Overlays */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-nebula-blue/10 to-cosmic-black/50 pointer-events-none" />
       
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
@@ -75,7 +44,7 @@ export const LandingPage = ({ onExplore }: LandingPageProps) => {
         </div>
       </div>
 
-      {/* Gradient Overlay */}
+      {/* Bottom Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-cosmic-black via-transparent to-transparent pointer-events-none" />
     </div>
   );
